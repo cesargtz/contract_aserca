@@ -9,7 +9,7 @@ class ContractAserca(models.Model):
 
     main_contract = fields.Many2one('purchase.order')
     name_producer_related = fields.Many2one('res.partner', "Productor")
-    quantity_tons = fields.Float('Toneladas')
+    quantity_tons = fields.Float('Toneladas', digits=(12, 4))
 
     @api.multi
     @api.onchange('main_contract','quantity_tons')
@@ -51,7 +51,7 @@ class TicketPartnerRelation(models.Model):
     main_contract = fields.Many2one('purchase.order')
     ticket = fields.Many2one('truck.reception')
     partner_related = fields.Many2one('contract.aserca', domain="[('main_contract','=', main_contract)]")
-    quantity = fields.Float()
+    quantity = fields.Float(digits=(12, 4))
     bolet_relation = fields.Many2one('ticket.relation')
 
 
