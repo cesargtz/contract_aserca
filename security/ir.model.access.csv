@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_contract_aserca,access_contract_aserca,model_contract_aserca,group_contract_aserca,1,1,1,1
+access_ticket_relation,ticket_relation,model_ticket_relation,group_contract_aserca,1,1,1,1
+user_access_contract_aserca,user_access_contract_aserca,model_contract_aserca,purchase.group_purchase_user,1,0,1,0
+user_access_ticket_relation,user_ticket_relation,model_ticket_relation,purchase.group_purchase_user,1,0,1,0	

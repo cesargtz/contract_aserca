@@ -1,0 +1,117 @@
+<odoo>
+  <data>
+    <!-- list view contract.aserca -->
+    <record model="ir.ui.view" id="contract_aserca_tree_view">
+      <field name="name">contract.aserca.tree</field>
+      <field name="model">contract.aserca</field>
+      <field name="arch" type="xml">
+        <tree string="Contratos" editable="bottom">
+          <!-- <field name="main_contract" string="Contrato"/> -->
+          <field name="name_producer_related" required="1"/>
+          <field name="quantity_tons" sum="quantity tons" required="1"/>
+        </tree>
+      </field>
+    </record>
+
+
+    <!-- Form View Ticket.Relation -->
+     <record model="ir.ui.view" id="ticket_relation_form_view">
+      <field name="name">ticket.relation.form</field>
+      <field name="model">ticket.relation</field>
+      <field name="arch" type="xml">
+        <form string="Relación de tickets" > 
+          <sheet>
+              <group >
+                <group>
+                  <field name="main_contract" string="Contrato"/>
+                  <field name="bolet_relation" string="Boleta relacionada" invisible="1"/>
+                </group>
+                <group>
+                  <field name="ticket" required="1" string="Ticket de camión" />
+                   <field name="name" string="Folio" required="1"/>
+                </group>
+              </group>
+              <separator/>
+              <group>
+                <group>
+                   <field name="partner_related" string="Productor" default_focus="1" />
+                </group>
+                <group>
+                  <field name="quantity" string="Cantidad"/>
+                </group>
+              </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <!-- List View Ticket.Relation -->
+     <record model="ir.ui.view" id="ticket_relation_tree_view">
+      <field name="name">ticket.relation.tree</field>
+      <field name="model">ticket.relation</field>
+      <field name="arch" type="xml">
+        <tree string="Relación de tickets" default_order='name' > <!-- editable="bottom" -->
+           <field name="main_contract" invisible="1"/>
+          <field name="ticket" readonly="1"/>
+          <field name="name" string="Folio" readonly="1"/>
+          <field name="partner_related" string="Productor" />
+          <field name="quantity" string="Cantidad" sum="quantity"/>
+          <button name="separate_ticket" class="oe_highlight" style="background:green;" icon="fa-scissors"
+              String="Dividir" type="object"></button>
+        </tree>
+      </field>
+    </record>
+    <!-- action tiket relation -->
+    <record model="ir.actions.act_window" id="ticket_relation_list_action">
+            <field name="name">Ticket Relation</field>
+            <field name="res_model">ticket.relation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    <!-- Menu for Ticket Relation -->
+    <menuitem
+          id="menu_action_ticket_relation_tree"
+          parent="purchase.menu_purchase_control"
+          action="ticket_relation_list_action"
+          sequence="20"
+          name="Boletas"
+          groups="contract_aserca.group_contract_aserca"/>
+    <!-- Filters and Groups Ticket Relation -->
+     <record model="ir.ui.view" id="ticket_relation_search_view">
+            <field name="name">ticket_relation_search</field>
+            <field name="model">ticket.relation</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="main_contract"/>
+                    <field name="partner_related"/>
+                    <field name="ticket"/>
+                    <field name="name"/>
+
+                    <group string="Group By">
+                        <filter name="group_by_main_contract" string="Contrato" context="{'group_by': 'main_contract'}"/>
+                        <filter name="group_by_ticket" string="Ticket" context="{'group_by': 'ticket'}"/>
+                        <filter name="group_by_partner_related" string="Productor" context="{'group_by': 'partner_related'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    <!-- Form View inherit to purchase order |  -->
+    <record model="ir.ui.view" id="purchase_order_form">
+      <field name="name">purchase.order.form</field>
+      <field name="model">purchase.order</field>
+      <field name="inherit_id" ref="purchase.purchase_order_form"/>
+      <field name="arch" type="xml">
+        <notebook position="inside">
+          <page string="Contratos">
+            <field name="contract_aserca_ids"/>
+          </page>
+           <page string="Relación de tickets" attrs="{'invisible': [('state', 'not in', ['purchase'])]}"
+            groups="contract_aserca.group_contract_aserca">
+            <field name="ticket_partner_relations"/>
+          </page>
+        </notebook>
+      </field>
+    </record>
+    <!--  -->
+  </data>
+</odoo>
